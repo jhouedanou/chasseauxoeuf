@@ -1,4 +1,17 @@
 {
+    "name": "bigfiveproduction/chasseauxoeuf",
+    "description": "chasse aux oeufs",
+    "autoload": {
+        "psr-4": {
+            "Bigfiveproduction\\Chasseauxoeuf\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Jean Luc Houedanou",
+            "email": "jeanluc@houedanou.com"
+        }
+    ],
     "require": {
         "supabase/supabase-php": "^0.0.3"
     }

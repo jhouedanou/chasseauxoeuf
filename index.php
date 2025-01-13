@@ -1,59 +1,41 @@
-<?php
-require 'vendor/autoload.php';
-use Supabase\CreateClient;
+<?php include('header.php'); ?>
 
-include('header.php');
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <div class="text-center mt-5 mb-4">
+                <h1 class="display-4">Connexion à la chasse aux œufs</h1>
+            </div>
+            <div id="userInfo" class="mb-3"></div>
+            <div class="d-grid gap-2">
+                <button id="connectButton" class="btn btn-primary btn-lg">
+                    Se connecter
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
-$supabaseUrl = 'VOTRE_URL_SUPABASE';
-$supabaseKey = 'VOTRE_CLE_SUPABASE';
-$client = new CreateClient($supabaseUrl, $supabaseKey);
+<script>
+    document.getElementById('connectButton').addEventListener('click', async () => {
+        try {
+            const response = await fetch('https://randomuser.me/api/');
+            const data = await response.json();
+            const user = data.results[0];
+            
+            const username = user.login.username;
+            const email = user.email;
+            
+            window.location.href = `game.php?username=${encodeURIComponent(username)}&email=${encodeURIComponent(email)}`;
+        } catch (error) {
+            console.error('Erreur de connexion:', error);
+            document.getElementById('userInfo').innerHTML = `
+                <div class="alert alert-danger" role="alert">
+                    Une erreur est survenue lors de la connexion. Veuillez réessayer.
+                </div>
+            `;
+        }
+    });
+</script>
 
-$username = htmlspecialchars($_GET['username']);
-$email = htmlspecialchars($_GET['email']);
-setcookie("username", $username, time() + (86400 * 30), "/");
-setcookie("email", $email, time() + (86400 * 30), "/");
-
-$date = date("d-m-Y");
-setcookie('datedujour', $date, time() + (86400 * 30), "/");
-
-if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
-    $ip = $_SERVER['HTTP_CLIENT_IP'];
-} elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-    $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-} else {
-    $ip = $_SERVER['REMOTE_ADDR'];
-}
-echo $ip;
-
-if (!empty($email)) {
-    // Vérification si l'utilisateur a déjà joué
-    $result = $client
-        ->from('joueurs')
-        ->select('*')
-        ->eq('email', $email)
-        ->eq('date', $date)
-        ->or('ip.eq.' . $ip)
-        ->execute();
-
-    if (count($result->data) > 0) {
-        header('Location: iladejajoue.php');
-    } else {
-        include('jeu.php');
-        
-        // Insertion du nouveau joueur
-        $client
-            ->from('joueurs')
-            ->insert([
-                'username' => $username,
-                'email' => $email,
-                'date' => $date,
-                'ip' => $ip
-            ])
-            ->execute();
-    }
-} else {
-    header('Location: reserve.php');
-}
-
-include('footer.php');
-?>
+<?php include('footer.php'); ?>

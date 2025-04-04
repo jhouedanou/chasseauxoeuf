@@ -2,9 +2,17 @@ services:
   - type: web
     name: chasseauxoeuf
     env: php
-    buildCommand: composer install --no-dev && mkdir -p build && cp -r *.php *.js *.css img build/
-    startCommand: php -S 0.0.0.0:$PORT -t build
+    buildCommand: |
+      composer install --no-dev
+      mkdir -p build
+      mkdir -p build/data
+      cp -r *.php *.js *.css img build/
+      chmod -R 755 build
+      chmod -R 777 build/data
+    startCommand: |
+      cd build && php -d display_errors=1 -d error_reporting=E_ALL -S 0.0.0.0:$PORT
     publishDirectory: build
+    healthCheckPath: /
     envVars:
       - key: SUPABASE_URL
         value: https://nbqssxhroavedcnjloys.supabase.co

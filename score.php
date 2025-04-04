@@ -1,5 +1,6 @@
 <?php 
 	include('header.php');
+	require_once('db.php');
 ?>
 	<style>
 		.score-container {
@@ -25,45 +26,26 @@
 	</style>
 
 	<div class="greeting">
-		Bonjour <?php echo htmlspecialchars($_COOKIE["score"]); ?> !
+		Bonjour <?php echo isset($_COOKIE["username"]) ? htmlspecialchars($_COOKIE["username"]) : 'Joueur'; ?> !
 	</div>
 	<div class="score-container">
-		🎮 Score: <?php echo htmlspecialchars($_COOKIE["score"]); ?> points! 🎮
+		🎮 Score: <?php echo isset($_COOKIE["score"]) ? htmlspecialchars($_COOKIE["score"]) : '0'; ?> points! 🎮
 	</div>
 
 <?php
-	$usertoinsert = $_COOKIE["username"];
-	$emailtoCheck = $_COOKIE["email"];
+	// Récupération des données du joueur depuis les cookies
+	$usertoinsert = isset($_COOKIE["username"]) ? $_COOKIE["username"] : '';
+	$emailtoCheck = isset($_COOKIE["email"]) ? $_COOKIE["email"] : '';
+	$scoreToUpdate = isset($_COOKIE["score"]) ? $_COOKIE["score"] : 0;
 	$datedujourtoCheck = date("d-m-Y");
 
-	
-$supabaseUrl = 'https://nbqssxhroavedcnjloys.supabase.co';
-$supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5icXNzeGhyb2F2ZWRjbmpsb3lzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzIyODgzNzcsImV4cCI6MjA0Nzg2NDM3N30.nlYK3l6l4wDqeWEEMknBSsBzlt0bLlFLGkFkbaluZj0';
+	// Initialiser la base de données locale
+	$db = Database::getInstance();
 
-	$ch = curl_init();
-	curl_setopt($ch, CURLOPT_URL, $supabaseUrl . '/rest/v1/joueurs');
-	curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PATCH');
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-	curl_setopt($ch, CURLOPT_HTTPHEADER, [
-		'apikey: ' . $supabaseKey,
-		'Authorization: Bearer ' . $supabaseKey,
-		'Content-Type: application/json',
-		'Prefer: return=minimal'
-	]);
-
-	$data = json_encode([
-		'score' => $_COOKIE["score"]
-	]);
-
-	$params = http_build_query([
-		'email' => 'eq.' . $emailtoCheck,
-		'date' => 'eq.' . $datedujourtoCheck
-	]);
-
-	curl_setopt($ch, CURLOPT_URL, $supabaseUrl . '/rest/v1/joueurs?' . $params);
-	curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-	$result = curl_exec($ch);
-	curl_close($ch);
+	// Mettre à jour le score du joueur dans la base de données locale
+	if (!empty($emailtoCheck) && !empty($scoreToUpdate)) {
+		$db->updateScore($emailtoCheck, $datedujourtoCheck, $scoreToUpdate);
+	}
 
 	include('footer.php');
 ?>

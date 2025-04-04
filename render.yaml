@@ -3,9 +3,11 @@ services:
     name: chasseauxoeuf
     env: php
     buildCommand: composer install --no-dev
-    startCommand: php -S 0.0.0.0:$PORT -t public/
+    startCommand: php -S 0.0.0.0:$PORT
     envVars:
-      - key: https://nbqssxhroavedcnjloys.supabase.co
+      - key: SUPABASE_URL
+        value: https://nbqssxhroavedcnjloys.supabase.co
         sync: false
-      - key: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5icXNzeGhyb2F2ZWRjbmpsb3lzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzIyODgzNzcsImV4cCI6MjA0Nzg2NDM3N30.nlYK3l6l4wDqeWEEMknBSsBzlt0bLlFLGkFkbaluZj0
+      - key: SUPABASE_KEY
+        value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5icXNzeGhyb2F2ZWRjbmpsb3lzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzIyODgzNzcsImV4cCI6MjA0Nzg2NDM3N30.nlYK3l6l4wDqeWEEMknBSsBzlt0bLlFLGkFkbaluZj0
         sync: false

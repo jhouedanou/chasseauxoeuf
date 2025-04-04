@@ -34,9 +34,3 @@ DirectoryIndex index.php
     </FilesMatch>
 </IfModule>
 
-# Set directory permissions
-<Directory "/data">
-    Options FollowSymLinks
-    AllowOverride All
-    Require all granted
-</Directory>

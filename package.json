@@ -46,11 +46,10 @@
 		"jshint": "^2.13.0",
 		"main-bower-files": "^2.13.3",
 		"ngrok": "^4.1.0",
-		"node-sass": "^6.0.1",
+		"sass": "^1.37.5",
 		"npm": "^7.20.2",
 		"psi": "^4.1.0",
-		"run-sequence": "^2.2.1",
-		"sass": "^1.37.5"
+		"run-sequence": "^2.2.1"
 	},
 	"dependencies": {
 		"css-scss": "^0.1.1",

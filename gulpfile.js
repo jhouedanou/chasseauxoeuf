@@ -123,7 +123,8 @@ gulp.task('browser-sync', function () {
       //     directory: true
       //  },
       online: true,
-      proxy: "127.0.0.1/egg",
+      // Utilisez une variable d'environnement ou définissez dynamiquement le nom du projet
+      proxy: process.env.PROJECT_URL || "localhost/chasseauxoeuf",
       notify: true,
     });
 });

@@ -53,7 +53,7 @@ function gagne() {
 		}
 	}
 	//redirection vers la page de score
-	window.location.replace("http://localhost/chasseauxoeuf/score.php");
+	window.location.replace("score.php");
 
 }
 

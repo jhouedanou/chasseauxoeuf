@@ -1,4 +1,13 @@
-<?php include('header.php'); ?>
+<?php
+// Charger les fonctions communes avant toute sortie HTML
+require_once('functions.php');
+require_once('db.php');
+
+// Traitement PHP ici si nécessaire
+
+// Maintenant on peut inclure le header HTML
+include('header.php');
+?>
 
 <div class="container">
     <div class="row">
